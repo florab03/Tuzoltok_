@@ -1,0 +1,9 @@
+C:\DNN\moduls\ApiSample\bin\Debug\ApiSample.exe
+C:\DNN\moduls\ApiSample\bin\Debug\ApiSample.pdb
+C:\DNN\moduls\ApiSample\bin\Debug\Hotcakes.CommerceDTO.dll
+C:\DNN\moduls\ApiSample\bin\Debug\Hotcakes.Web.dll
+C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.csproj.AssemblyReference.cache
+C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.csproj.CoreCompileInputs.cache
+C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.csproj.Up2Date
+C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.exe
+C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.pdb
