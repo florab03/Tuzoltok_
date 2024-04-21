@@ -32,7 +32,7 @@ namespace ApiSample
     {
         private static void Main(string[] args)
         {
-            //próba
+            //próba 2024.04.21
             Console.WriteLine("This is an API Sample Program for Hotcakes");
             Console.WriteLine();
 
