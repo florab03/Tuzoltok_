@@ -42,6 +42,7 @@
             raktarKeszletBindingSource = new BindingSource(components);
             buttonAdd = new Button();
             raktarKeszletBindingSource1 = new BindingSource(components);
+            buttonUrites = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)raktarKeszletBindingSource2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)raktarKeszletBindingSource).BeginInit();
@@ -146,12 +147,24 @@
             // 
             raktarKeszletBindingSource1.DataSource = typeof(RaktarKeszlet);
             // 
+            // buttonUrites
+            // 
+            buttonUrites.BackColor = Color.Coral;
+            buttonUrites.Location = new Point(1575, 44);
+            buttonUrites.Name = "buttonUrites";
+            buttonUrites.Size = new Size(211, 190);
+            buttonUrites.TabIndex = 10;
+            buttonUrites.Text = "Mezők ürítése";
+            buttonUrites.UseVisualStyleBackColor = false;
+            buttonUrites.Click += buttonUrites_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Tan;
             ClientSize = new Size(1932, 1199);
+            Controls.Add(buttonUrites);
             Controls.Add(buttonAdd);
             Controls.Add(dataGridView1);
             Controls.Add(label4);
@@ -173,11 +186,6 @@
         }
 
         #endregion
-
-        private TextBox textBoxMegnevezes;
-        private TextBox textBoxCikkszam;
-        private TextBox textBoxMennyiseg;
-        private TextBox textBoxEgysegar;
         private Label label1;
         private Label label2;
         private Label label3;
@@ -187,5 +195,10 @@
         private BindingSource raktarKeszletBindingSource;
         private BindingSource raktarKeszletBindingSource2;
         private BindingSource raktarKeszletBindingSource1;
+        public TextBox textBoxMegnevezes;
+        public TextBox textBoxCikkszam;
+        public TextBox textBoxMennyiseg;
+        public TextBox textBoxEgysegar;
+        public Button buttonUrites;
     }
 }

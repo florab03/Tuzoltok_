@@ -13,7 +13,7 @@ namespace teszt_elokeszites
             InitializeComponent();
             raktarKeszlet = new RaktarKeszlet();
             Frissít();
-            buttonAdd.Click += buttonAdd_Click;
+
 
 
         }
@@ -34,6 +34,11 @@ namespace teszt_elokeszites
 
             Frissít();
 
+
+        }
+
+        public void buttonUrites_Click(object sender, EventArgs e)
+        {
             textBoxMegnevezes.Clear();
             textBoxCikkszam.Clear();
             textBoxMennyiseg.Clear();
