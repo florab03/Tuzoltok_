@@ -58,6 +58,7 @@
             this.buttonOK.TabIndex = 2;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // buttonMégse
             // 
@@ -67,6 +68,7 @@
             this.buttonMégse.TabIndex = 3;
             this.buttonMégse.Text = "Mégse";
             this.buttonMégse.UseVisualStyleBackColor = true;
+            this.buttonMégse.Click += new System.EventHandler(this.buttonMégse_Click);
             // 
             // buttonPlusz
             // 
@@ -86,6 +88,7 @@
             this.buttonMinusz.TabIndex = 5;
             this.buttonMinusz.Text = "-";
             this.buttonMinusz.UseVisualStyleBackColor = true;
+            this.buttonMinusz.Click += new System.EventHandler(this.buttonMinusz_Click);
             // 
             // textBoxJelenleg
             // 
@@ -144,6 +147,7 @@
             this.listBoxRaktar.Name = "listBoxRaktar";
             this.listBoxRaktar.Size = new System.Drawing.Size(450, 407);
             this.listBoxRaktar.TabIndex = 12;
+            this.listBoxRaktar.SelectedIndexChanged += new System.EventHandler(this.listBoxRaktar_SelectedIndexChanged);
             // 
             // Form1
             // 

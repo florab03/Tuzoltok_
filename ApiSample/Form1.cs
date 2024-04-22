@@ -66,5 +66,51 @@ namespace ApiSample
             c = c + 1;
             textBoxSzerkeszt.Text = c.ToString();
         }
+
+        private void buttonMinusz_Click(object sender, EventArgs e)
+        {
+            var c = int.Parse(textBoxSzerkeszt.Text);
+            c = c - 1;
+            textBoxSzerkeszt.Text = c.ToString();
+        }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            var index = listBoxRaktar.SelectedIndex + 1;
+            var activeBico = termeklista[index];
+            var inv = proxy.ProductInventoryFind(activeBico.inventory_id).Content;
+            inv.QuantityOnHand = int.Parse(textBoxSzerkeszt.Text);
+            var valasz = proxy.ProductInventoryUpdate(inv);
+
+            if (valasz != null)
+            {
+                termeklista[index].keszlet = inv.QuantityOnHand;
+
+                textBoxSzerkeszt.Text = inv.QuantityOnHand.ToString();
+                textBoxJelenleg.Text = textBoxSzerkeszt.Text;
+                textBoxSzerkeszt.Clear();
+            };
+        }
+
+        private void buttonMégse_Click(object sender, EventArgs e)
+        {
+            textBoxSzerkeszt.Clear();
+            //textBoxSzerkeszt.Text = termeklista[listBoxRaktar.SelectedIndex + 1].keszlet.ToString();
+            DialogResult result = MessageBox.Show("Biztos ki akarsz lépni a szerkesztésből?", "Kilépés", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
+            
+                
+        }
+
+        private void listBoxRaktar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = ((ListBox)sender).SelectedIndex + 1;
+            textBoxJelenleg.Text = (termeklista[index].keszlet).ToString();
+            textBoxSzerkeszt.Text = (termeklista[index].keszlet).ToString();
+            this.Refresh();
+        }
     }
 }
