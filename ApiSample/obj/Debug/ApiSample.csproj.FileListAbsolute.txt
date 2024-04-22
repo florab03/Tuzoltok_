@@ -25,3 +25,4 @@ C:\Users\ca567s\Desktop\akos\ApiSample\obj\Debug\ApiSample.csproj.CoreCompileInp
 C:\Users\ca567s\Desktop\akos\ApiSample\obj\Debug\ApiSample.csproj.CopyComplete
 C:\Users\ca567s\Desktop\akos\ApiSample\obj\Debug\ApiSample.exe
 C:\Users\ca567s\Desktop\akos\ApiSample\obj\Debug\ApiSample.pdb
+C:\Users\ca567s\Desktop\akos\ApiSample\obj\Debug\ApiSample.Properties.Resources.resources

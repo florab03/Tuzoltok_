@@ -91,6 +91,8 @@ namespace ApiSample
                 textBoxJelenleg.Text = textBoxSzerkeszt.Text;
                 textBoxSzerkeszt.Clear();
             };
+
+            
         }
 
         private void buttonMégse_Click(object sender, EventArgs e)
@@ -118,7 +120,11 @@ namespace ApiSample
             return regex.IsMatch(name);
         }
 
-        
+        private bool CheckNull(string data)
+        {
+            return !string.IsNullOrEmpty(data);
+        }
+
 
         private void textBoxSzerkeszt_Validating(object sender, CancelEventArgs e)
         {
@@ -127,11 +133,42 @@ namespace ApiSample
                 e.Cancel = true;
                 errorProvider1.SetError(textBoxSzerkeszt, "Töltsd ki helyesen a mezőt!");
             }
+
+            if (!CheckNull(textBoxSzerkeszt.Text))
+            {
+                e.Cancel = true;
+                errorProvider1.SetError(textBoxSzerkeszt, "Ne hagyd üresen a mezőt te butus!");
+            }
         }
 
         private void textBoxSzerkeszt_Validated(object sender, EventArgs e)
         {
             errorProvider1.SetError(textBoxSzerkeszt, "");
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
