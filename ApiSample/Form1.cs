@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -100,9 +101,7 @@ namespace ApiSample
             if (result == DialogResult.Yes)
             {
                 this.Close();
-            }
-            
-                
+            }       
         }
 
         private void listBoxRaktar_SelectedIndexChanged(object sender, EventArgs e)
@@ -111,6 +110,28 @@ namespace ApiSample
             textBoxJelenleg.Text = (termeklista[index].keszlet).ToString();
             textBoxSzerkeszt.Text = (termeklista[index].keszlet).ToString();
             this.Refresh();
+        }
+
+        private bool CheckSzam(string name)
+        {
+            Regex regex = new Regex("^\\d+$");
+            return regex.IsMatch(name);
+        }
+
+        
+
+        private void textBoxSzerkeszt_Validating(object sender, CancelEventArgs e)
+        {
+            if (!CheckSzam(textBoxSzerkeszt.Text))
+            {
+                e.Cancel = true;
+                errorProvider1.SetError(textBoxSzerkeszt, "Töltsd ki helyesen a mezőt!");
+            }
+        }
+
+        private void textBoxSzerkeszt_Validated(object sender, EventArgs e)
+        {
+            errorProvider1.SetError(textBoxSzerkeszt, "");
         }
     }
 }

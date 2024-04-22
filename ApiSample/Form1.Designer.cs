@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBoxSzuro = new System.Windows.Forms.TextBox();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonMégse = new System.Windows.Forms.Button();
@@ -40,6 +41,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.listBoxRaktar = new System.Windows.Forms.ListBox();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxSzuro
@@ -117,10 +120,12 @@
             // 
             // textBoxSzerkeszt
             // 
-            this.textBoxSzerkeszt.Location = new System.Drawing.Point(870, 137);
+            this.textBoxSzerkeszt.Location = new System.Drawing.Point(870, 134);
             this.textBoxSzerkeszt.Name = "textBoxSzerkeszt";
             this.textBoxSzerkeszt.Size = new System.Drawing.Size(100, 20);
             this.textBoxSzerkeszt.TabIndex = 9;
+            this.textBoxSzerkeszt.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxSzerkeszt_Validating);
+            this.textBoxSzerkeszt.Validated += new System.EventHandler(this.textBoxSzerkeszt_Validated);
             // 
             // label3
             // 
@@ -149,6 +154,10 @@
             this.listBoxRaktar.TabIndex = 12;
             this.listBoxRaktar.SelectedIndexChanged += new System.EventHandler(this.listBoxRaktar_SelectedIndexChanged);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -168,6 +177,7 @@
             this.Controls.Add(this.textBoxSzuro);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,5 +196,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ListBox listBoxRaktar;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
