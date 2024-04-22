@@ -25,75 +25,92 @@
 
 using System;
 using Hotcakes.CommerceDTO.v1.Client;
+using Microsoft.SqlServer.Server;
+using System.Windows.Forms;
 
 namespace ApiSample
 {
     internal class Program
     {
-        private static void Main(string[] args)
+
+
+        [STAThread]
+
+        static void Main()
         {
-            //próba 2024.04.21
-            Console.WriteLine("This is an API Sample Program for Hotcakes");
-            Console.WriteLine();
+            Application.EnableVisualStyles();
 
-            var url = string.Empty;
-            var key = string.Empty;
+            Application.SetCompatibleTextRenderingDefault(false);
 
-            if (args.Length > 0)
-            {
-                foreach (var arg in args)
-                {
-                    url = args[0];
-                    key = args[1];
-                }
-            }
-
-            if (url == string.Empty) url = "http://20.234.113.211:8105";
-            if (key == string.Empty) key = "1-1593e0a7-8ad3-467c-a062-78c2613dafc3";
-
-            var proxy = new Api(url, key);
-
-            var snaps = proxy.CategoriesFindAll();
-            if (snaps.Content != null)
-            {
-                Console.WriteLine("Found " + snaps.Content.Count + " categories");
-                Console.WriteLine("-- First 5 --");
-                for (var i = 0; i < 5; i++)
-                {
-                    if (i < snaps.Content.Count)
-                    {
-                        Console.WriteLine(i + ") " + snaps.Content[i].Name + " [" + snaps.Content[i].Bvin + "]");
-                        var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
-                        if (cat.Errors.Count > 0)
-                        {
-                            foreach (var err in cat.Errors)
-                            {
-                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("By Bvin: " + cat.Content.Name + " | " + cat.Content.Description);
-                        }
-
-                        var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
-                        if (catSlug.Errors.Count > 0)
-                        {
-                            foreach (var err in catSlug.Errors)
-                            {
-                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("By Slug: " + cat.Content.Name + " | " + cat.Content.Description);
-                        }
-                    }
-                }
-            }
-
-            Console.WriteLine("Done - Press a key to continue");
-            Console.ReadKey();
+            Application.Run(new Form1());
         }
     }
 }
+
+//        private static void Main(string[] args)
+//        {
+//            //próba 2024.04.21
+//            Console.WriteLine("This is an API Sample Program for Hotcakes");
+//            Console.WriteLine();
+
+//            var url = string.Empty;
+//            var key = string.Empty;
+
+//            if (args.Length > 0)
+//            {
+//                foreach (var arg in args)
+//                {
+//                    url = args[0];
+//                    key = args[1];
+//                }
+//            }
+
+//            if (url == string.Empty) url = "http://20.234.113.211:8105";
+//            if (key == string.Empty) key = "1-1593e0a7-8ad3-467c-a062-78c2613dafc3";
+
+//            var proxy = new Api(url, key);
+
+//            var snaps = proxy.CategoriesFindAll();
+//            if (snaps.Content != null)
+//            {
+//                Console.WriteLine("Found " + snaps.Content.Count + " categories");
+//                Console.WriteLine("-- First 5 --");
+//                for (var i = 0; i < 5; i++)
+//                {
+//                    if (i < snaps.Content.Count)
+//                    {
+//                        Console.WriteLine(i + ") " + snaps.Content[i].Name + " [" + snaps.Content[i].Bvin + "]");
+//                        var cat = proxy.CategoriesFind(snaps.Content[i].Bvin);
+//                        if (cat.Errors.Count > 0)
+//                        {
+//                            foreach (var err in cat.Errors)
+//                            {
+//                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
+//                            }
+//                        }
+//                        else
+//                        {
+//                            Console.WriteLine("By Bvin: " + cat.Content.Name + " | " + cat.Content.Description);
+//                        }
+
+//                        var catSlug = proxy.CategoriesFindBySlug(snaps.Content[i].RewriteUrl);
+//                        if (catSlug.Errors.Count > 0)
+//                        {
+//                            foreach (var err in catSlug.Errors)
+//                            {
+//                                Console.WriteLine("ERROR: " + err.Code + " " + err.Description);
+//                            }
+//                        }
+//                        else
+//                        {
+//                            Console.WriteLine("By Slug: " + cat.Content.Name + " | " + cat.Content.Description);
+//                        }
+//                    }
+//                }
+//            }
+
+//            Console.WriteLine("Done - Press a key to continue");
+//            Console.ReadKey();
+//        }
+//    }
+//}

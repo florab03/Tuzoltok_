@@ -7,3 +7,10 @@ C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.csproj.CoreCompileInputs.cache
 C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.csproj.Up2Date
 C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.exe
 C:\DNN\moduls\ApiSample\obj\Debug\ApiSample.pdb
+C:\Users\ca567s\source\repos\Tuzoltok_\ApiSample\obj\Debug\ApiSample.csproj.AssemblyReference.cache
+C:\Users\ca567s\source\repos\Tuzoltok_\ApiSample\obj\Debug\ApiSample.csproj.SuggestedBindingRedirects.cache
+C:\Users\ca567s\source\repos\Tuzoltok_\ApiSample\obj\Debug\ApiSample.Form1.resources
+C:\Users\ca567s\source\repos\Tuzoltok_\ApiSample\obj\Debug\ApiSample.csproj.GenerateResource.cache
+C:\Users\ca567s\source\repos\Tuzoltok_\ApiSample\obj\Debug\ApiSample.csproj.CoreCompileInputs.cache
+C:\Users\ca567s\source\repos\Tuzoltok_\ApiSample\obj\Debug\ApiSample.exe
+C:\Users\ca567s\source\repos\Tuzoltok_\ApiSample\obj\Debug\ApiSample.pdb
