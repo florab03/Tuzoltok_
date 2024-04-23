@@ -121,7 +121,7 @@ namespace ApiSample
             this.Refresh();
         }
 
-        private bool CheckSzam(string name)
+        public bool CheckSzam(string name)
         {
             Regex regex = new Regex("^\\d+$");
             return regex.IsMatch(name);

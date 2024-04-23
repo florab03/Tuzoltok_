@@ -11,6 +11,7 @@ namespace UnitTest
     [TestFixture]
     public class PluszTest
     {
+        //hogy ha a plusz gombra nyomok, akkor növekszik e a textboxszerkesztben a szám
         [Test]
         public void ButtonPlusz_Noveles()
         {
