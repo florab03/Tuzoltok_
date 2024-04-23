@@ -16,11 +16,11 @@ namespace ApiSample
 {
     public partial class Form1 : Form
     {
-        List<Bicok> termeklista = new List<Bicok>();
+       public  List<Bicok> termeklista = new List<Bicok>();
         
         //static string url = "http://20.234.113.211:8105/";
         //static string key = "1-1593e0a7-8ad3-467c-a062-78c2613dafc3";
-
+    
 
         public Form1()
         {
@@ -49,7 +49,7 @@ namespace ApiSample
 
         Api proxy = new Api(url, key);
 
-        private void BicoSzures()
+        public void BicoSzures()
         {
             List<string> szures = new List<string>();
             for (int i = 0; i < termeklista.Count; i++)
@@ -63,7 +63,7 @@ namespace ApiSample
             listBoxRaktar.DataSource = szures;
         }
 
-        private void textBoxSzuro_TextChanged(object sender, EventArgs e)
+        public void textBoxSzuro_TextChanged(object sender, EventArgs e)
         {
             BicoSzures();
         }
