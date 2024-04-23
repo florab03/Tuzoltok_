@@ -68,7 +68,7 @@ namespace ApiSample
             BicoSzures();
         }
 
-        private void buttonPlusz_Click(object sender, EventArgs e)
+        public void buttonPlusz_Click(object sender, EventArgs e)
         {
             var c = int.Parse(textBoxSzerkeszt.Text);
             c = c + 1;
