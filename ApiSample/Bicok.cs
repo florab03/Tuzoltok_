@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ApiSample
 {
-    //próba push
-    internal class Bicok
+    
+    public class Bicok
     {
         public int id;
         public string nev;

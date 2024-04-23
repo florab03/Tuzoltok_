@@ -17,10 +17,17 @@ namespace ApiSample
     public partial class Form1 : Form
     {
         List<Bicok> termeklista = new List<Bicok>();
+        
+        //static string url = "http://20.234.113.211:8105/";
+        //static string key = "1-1593e0a7-8ad3-467c-a062-78c2613dafc3";
+
+
         public Form1()
         {
             InitializeComponent();
+            //buttonOK.Click += buttonOK_Click;
 
+            //proxy = new Api(url, key);
             var snaps = proxy.ProductsFindAll();
 
             for (int i = 0; i < snaps.Content.Count; i++)
@@ -36,7 +43,7 @@ namespace ApiSample
                 termeklista.Add(b);
             }
         }
-
+       
         static string url = "http://20.234.113.211:8105/";
         static string key = "1-1593e0a7-8ad3-467c-a062-78c2613dafc3";
 
@@ -75,7 +82,7 @@ namespace ApiSample
             textBoxSzerkeszt.Text = c.ToString();
         }
 
-        private void buttonOK_Click(object sender, EventArgs e)
+        public void buttonOK_Click(object sender, EventArgs e)
         {
             var index = listBoxRaktar.SelectedIndex + 1;
             var activeBico = termeklista[index];

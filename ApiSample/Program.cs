@@ -30,7 +30,7 @@ using System.Windows.Forms;
 
 namespace ApiSample
 {
-    internal class Program
+    public class Program
     {
 
 
