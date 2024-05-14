@@ -1,0 +1,9 @@
+﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Vasarlo') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Vasarlo
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Rendeles') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Rendeles
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Asztal') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Asztal
+GO

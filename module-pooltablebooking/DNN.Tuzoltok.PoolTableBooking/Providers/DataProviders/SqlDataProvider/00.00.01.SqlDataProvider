@@ -1,0 +1,83 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Vasarlo') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Vasarlo
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Rendeles') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Rendeles
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Asztal') AND type in (N'U'))
+DROP TABLE {databaseOwner}{objectQualifier}Asztal
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}Asztal
+    (
+        [AsztalID] INT NOT NULL IDENTITY (1, 1)
+                CONSTRAINT [PK_Asztal] PRIMARY KEY CLUSTERED,
+
+        [Name] NVARCHAR(1024),
+        [Duration] INT
+        
+    )  ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}Rendeles
+    (
+        [BookingID] INT NOT NULL IDENTITY (1, 1)
+                CONSTRAINT [PK_Rendeles] PRIMARY KEY CLUSTERED,
+        [VasarloID] INT,
+        [AsztalID] INT,
+	    [BookingDate] [datetime],
+        [IsCancelled] BIT,
+        [Booking_time] NVARCHAR(50)
+        
+
+    )  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Rendeles WITH NOCHECK ADD CONSTRAINT [FK_Rendeles_Asztal] FOREIGN KEY ([AsztalID])
+    REFERENCES {databaseOwner}{objectQualifier}Asztal ([AsztalID])
+    ON DELETE CASCADE
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}Vasarlo
+    (
+        [VasarloID] INT NOT NULL IDENTITY (1, 1)
+                CONSTRAINT [PK_Vasarlo] PRIMARY KEY CLUSTERED,
+        [VezetekNev] NVARCHAR(2048),
+        [KeresztNev] NVARCHAR(2048),
+        [Email] NVARCHAR(2048),
+        [Telefonszam] NVARCHAR(20),
+        
+        
+
+    )  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Rendeles WITH NOCHECK ADD CONSTRAINT [FK_Rendeles_Vasarlo] FOREIGN KEY ([VasarloID])
+    REFERENCES {databaseOwner}{objectQualifier}Vasarlo ([VasarloID])
+    ON DELETE CASCADE
+GO
+
+INSERT INTO [Asztal] (
+	[Name], [Duration]
+	) VALUES
+	('Első', 2),
+	('Második', 2),
+	('Harmadik', 5),
+	('Negyedik', 2);
+GO
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

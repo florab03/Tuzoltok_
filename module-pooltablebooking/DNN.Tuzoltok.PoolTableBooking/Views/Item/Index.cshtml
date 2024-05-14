@@ -1,0 +1,190 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Models.Item>>
+
+@using System.Text.RegularExpressions
+@using DotNetNuke.Web.Mvc.Helpers
+
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clickable Rectangles</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        .rectangle {
+            width: 50px;
+            height: 30px;
+            background-color: lightblue;
+            margin: 10px;
+            display: inline-block;
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .clicked {
+            background-color: lightgreen;
+        }
+
+        .container {
+            width: 40%;
+            margin: auto;
+            text-align: center;
+        }
+
+        .date-picker {
+            width: 30%;
+        }
+
+        .selected-info {
+            width: 30%;
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="tel"], input[type="email"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #selected-date {
+            margin-top: 20px;
+            text-align: left; /* Balra igazítás */
+        }
+
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+    </style>
+    <script>
+        function changeColor(element, side) {
+            // Töröljük az összes téglalapból a clicked osztályt az adott sorban
+            var rectangles = element.parentElement.querySelectorAll('.rectangle');
+            rectangles.forEach(rect => {
+                rect.classList.remove('clicked');
+            });
+            // Jelöljük ki csak az aktuális téglalapot
+            element.classList.toggle('clicked');
+
+            // Ellenőrizzük, hogy mindkét sorra kattintottunk-e
+            var palyaRectangles = document.querySelectorAll('.palya .rectangle.clicked');
+            var idoRectangles = document.querySelectorAll('.ido .rectangle.clicked');
+            var selectedInfo = document.getElementById('selected-info');
+
+            if (palyaRectangles.length > 0 && idoRectangles.length > 0) {
+                selectedInfo.style.textAlign = "left";
+                selectedInfo.innerHTML = "Kiválasztott pálya: " + palyaRectangles[0].textContent + "<br>" +
+                    "Kiválasztott időpont: " + idoRectangles[0].textContent;
+            } else if (side === "left") {
+                selectedInfo.style.textAlign = "left";
+                selectedInfo.innerHTML = "Kiválasztott pálya: " + element.textContent;
+            } else if (side === "right") {
+                selectedInfo.style.textAlign = "left";
+                selectedInfo.innerHTML = "Kiválasztott időpont: " + element.textContent;
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <form class="date-picker">
+            <label for="datepicker">Válasszon dátumot:</label>
+            <input type="text" id="datepicker">
+
+            <div id="selected-date"></div>
+
+            <script>
+                $(function () {
+                    $("#datepicker").datepicker({
+                        onSelect: function (date) {
+                            var parts = date.split("/");
+                            var formattedDate = parts[2] + "." + parts[0] + "." + parts[1];
+                            $("#selected-date").text("Kiválasztott dátum: " + formattedDate);
+                        }
+                    });
+                });
+            </script>
+        </form>
+        <label>
+            Válasszon pályát!
+        </label>
+        <div>
+
+            <div class="palya">
+                <div class="rectangle" onclick="changeColor(this, 'left')">1</div>
+                <div class="rectangle" onclick="changeColor(this, 'left')">2</div>
+                <div class="rectangle" onclick="changeColor(this, 'left')">3</div>
+                <div class="rectangle" onclick="changeColor(this, 'left')">4</div>
+                <div class="rectangle" onclick="changeColor(this, 'left')">5</div>
+                <div class="rectangle" onclick="changeColor(this, 'left')">6</div>
+                <div class="rectangle" onclick="changeColor(this, 'left')">7</div>
+                <div class="rectangle" onclick="changeColor(this, 'left')">8</div>
+            </div>
+        </div>
+        <label>
+            Válasszon időpontot!
+        </label>
+        <div>
+
+            <div class="ido">
+                <div class="rectangle" onclick="changeColor(this, 'right')">13:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">14:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">15:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">16:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">17:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">18:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">19:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">20:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">21:00</div>
+                <div class="rectangle" onclick="changeColor(this, 'right')">22:00</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="selected-info" class="selected-info"></div>
+
+    <!-- Űrlap a kért adatok bekérésére -->
+    <form id="user-form" class="container">
+        <label for="firstname">Keresztnév:</label>
+        <input type="text" id="firstname" name="firstname" required>
+
+        <label for="lastname">Vezetéknév:</label>
+        <input type="text" id="lastname" name="lastname" required>
+
+        <label for="phone">Telefonszám:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{9}" required>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+
+        <input type="submit" value="Küldés">
+    </form>
+
+</body>
+</html>
+
