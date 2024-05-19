@@ -3,6 +3,18 @@
 @using System.Text.RegularExpressions
 @using DotNetNuke.Web.Mvc.Helpers
 
+@{
+    //ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/DesktopModules/HelloWorld/module-helloworld/Dnn.HelloWorld/Scripts/BSScript.js");
+
+
+    var controller = new Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Controllers.RendelesController();
+    var tableNames = controller.GetTableNames();
+    var bookableTime = controller.GetBookableTime();
+    var vasarloCount = controller.GetVasarloCount();
+
+
+
+}
 
 <!DOCTYPE html>
 
@@ -41,6 +53,7 @@
 
         .date-picker {
             width: 30%;
+            z-index: 110;
         }
 
         .selected-info {
@@ -71,17 +84,18 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         #selected-date {
             margin-top: 20px;
             text-align: left; /* Balra igazítás */
         }
 
-            input[type="submit"]:hover {
-                background-color: #45a049;
-            }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
     </style>
     <script>
-        function changeColor(element, side) {
+        function changeColor(element, type) {
             // Töröljük az összes téglalapból a clicked osztályt az adott sorban
             var rectangles = element.parentElement.querySelectorAll('.rectangle');
             rectangles.forEach(rect => {
@@ -99,12 +113,16 @@
                 selectedInfo.style.textAlign = "left";
                 selectedInfo.innerHTML = "Kiválasztott pálya: " + palyaRectangles[0].textContent + "<br>" +
                     "Kiválasztott időpont: " + idoRectangles[0].textContent;
-            } else if (side === "left") {
+                document.getElementById("bookingTime").value = idoRectangles[0].textContent;
+                document.getElementById("tableName").value = palyaRectangles[0].textContent;
+            } else if (type === "table") {
                 selectedInfo.style.textAlign = "left";
                 selectedInfo.innerHTML = "Kiválasztott pálya: " + element.textContent;
-            } else if (side === "right") {
+                document.getElementById("tableName").value = element.textContent;
+            } else if (type === "time") {
                 selectedInfo.style.textAlign = "left";
                 selectedInfo.innerHTML = "Kiválasztott időpont: " + element.textContent;
+                document.getElementById("bookingTime").value = element.textContent;
             }
         }
     </script>
@@ -124,6 +142,7 @@
                         onSelect: function (date) {
                             var parts = date.split("/");
                             var formattedDate = parts[2] + "." + parts[0] + "." + parts[1];
+                            document.getElementById("date").value = formattedDate;
                             $("#selected-date").text("Kiválasztott dátum: " + formattedDate);
                         }
                     });
@@ -132,18 +151,16 @@
         </form>
         <label>
             Válasszon pályát!
+
         </label>
         <div>
 
             <div class="palya">
-                <div class="rectangle" onclick="changeColor(this, 'left')">1</div>
-                <div class="rectangle" onclick="changeColor(this, 'left')">2</div>
-                <div class="rectangle" onclick="changeColor(this, 'left')">3</div>
-                <div class="rectangle" onclick="changeColor(this, 'left')">4</div>
-                <div class="rectangle" onclick="changeColor(this, 'left')">5</div>
-                <div class="rectangle" onclick="changeColor(this, 'left')">6</div>
-                <div class="rectangle" onclick="changeColor(this, 'left')">7</div>
-                <div class="rectangle" onclick="changeColor(this, 'left')">8</div>
+
+                @foreach (var tableName in tableNames)
+                {
+                    <div class="rectangle" onclick="changeColor(this, 'table')">@(tableName)</div>
+                }
             </div>
         </div>
         <label>
@@ -152,16 +169,10 @@
         <div>
 
             <div class="ido">
-                <div class="rectangle" onclick="changeColor(this, 'right')">13:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">14:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">15:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">16:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">17:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">18:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">19:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">20:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">21:00</div>
-                <div class="rectangle" onclick="changeColor(this, 'right')">22:00</div>
+                @foreach (string time in bookableTime)
+                {
+                    <div class="rectangle" onclick="changeColor(this, 'time')">@(time)</div>
+                }
             </div>
         </div>
     </div>
@@ -169,7 +180,7 @@
     <div id="selected-info" class="selected-info"></div>
 
     <!-- Űrlap a kért adatok bekérésére -->
-    <form id="user-form" class="container">
+    <form id="user-form" class="container" method="post" action="@Url.Action("AddBooking", "Rendeles")">
         <label for="firstname">Keresztnév:</label>
         <input type="text" id="firstname" name="firstname" required>
 
@@ -177,13 +188,19 @@
         <input type="text" id="lastname" name="lastname" required>
 
         <label for="phone">Telefonszám:</label>
-        <input type="tel" id="phone" name="phone" pattern="[0-9]{9}" required>
+        <input type="tel" id="phone" name="phone" pattern="\+*[0-9]*" required>
 
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" required>
 
         <input type="submit" value="Küldés">
+        <input type="hidden" id="tableName" name="tableName" value="">
+        <input type="hidden" id="bookingTime" name="bookingTime" value="">
+        <input type="hidden" id="date" name="date" value="">
     </form>
+
+    <p>@(vasarloCount)</p>
+
 
 </body>
 </html>

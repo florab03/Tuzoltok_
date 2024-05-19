@@ -1,9 +1,12 @@
 ﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Vasarlo') AND type in (N'U'))
+ALTER TABLE {databaseOwner}{objectQualifier}Rendeles DROP CONSTRAINT [FK_Rendeles_Vasarlo] 
 DROP TABLE {databaseOwner}{objectQualifier}Vasarlo
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Asztal') AND type in (N'U'))
+ALTER TABLE {databaseOwner}{objectQualifier}Rendeles DROP CONSTRAINT [FK_Rendeles_Asztal] 
+DROP TABLE {databaseOwner}{objectQualifier}Asztal
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Rendeles') AND type in (N'U'))
 DROP TABLE {databaseOwner}{objectQualifier}Rendeles
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Asztal') AND type in (N'U'))
-DROP TABLE {databaseOwner}{objectQualifier}Asztal
 GO

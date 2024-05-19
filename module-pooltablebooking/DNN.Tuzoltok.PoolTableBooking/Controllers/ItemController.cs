@@ -12,6 +12,7 @@
 
 using Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Components;
 using Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Models;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
@@ -59,7 +60,6 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Controllers
                 item.CreatedOnDate = DateTime.UtcNow;
                 item.LastModifiedByUserId = User.UserID;
                 item.LastModifiedOnDate = DateTime.UtcNow;
-
                 ItemManager.Instance.CreateItem(item);
             }
             else

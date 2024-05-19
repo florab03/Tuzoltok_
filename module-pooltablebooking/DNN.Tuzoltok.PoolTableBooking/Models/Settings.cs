@@ -9,9 +9,6 @@
 ' DEALINGS IN THE SOFTWARE.
 ' 
 */
-
-//05.14
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
