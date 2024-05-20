@@ -69,15 +69,51 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Controllers
             }
         }
 
-        public IEnumerable<string> GetBookableTime()
+        // Időpontok lekérése
+        public IEnumerable<BookableTime> GetBookableTime(string tableName, string date)
         {
-            for (int i = 13; i <= 22; i++)
-                yield return $"{i}:00";
+            if (string.IsNullOrEmpty(tableName) || string.IsNullOrEmpty(date))
+                yield break;
+            Asztal asztal = FindAsztalByName(tableName);
+            int[] dateN = Array.ConvertAll(date.Split('.'), Int32.Parse);
+            for (int hour = 13; hour <= 22; hour++)
+            {
+                DateTime dateTime = new DateTime(dateN[0], dateN[1], dateN[2], hour, 0, 0);
+                bool isBooked = false;
+                using (var ctx = DataContext.Instance())
+                {
+                    var rendelesRepo = ctx.GetRepository<Rendeles>();
+                    isBooked = rendelesRepo.Get()
+                        .Where(r =>
+                        r.AsztalID == asztal.AsztalID &&
+                        r.BookingDateTime == dateTime &&
+                        r.IsCancelled == false)
+                        .Count() == 1;
+                }
+                yield return new BookableTime($"{hour}:00", isBooked);
+
+            }
+        }
+
+        public string GetDatePickerStringFormRequest(string date)
+        {
+            if (string.IsNullOrEmpty(date))
+                return string.Empty;
+            int[] numbers = Array.ConvertAll(date.Split('.'), Int32.Parse);
+            return $"{numbers[1]}/{numbers[2]}/{numbers[0]}";
+        }
+
+        public string GetSelectedTableCommand(string tableName)
+        {
+            if (string.IsNullOrEmpty(tableName))
+                return string.Empty;
+            return $"window.onload = changeColor(document.getElementById('table{tableName}'), 'table');";
         }
 
         [HttpPost]
         public ActionResult AddBooking(FormCollection form)
         {
+            Vasarlo vasarlo = null;
             try
             {
                 string kersztNev = form["firstname"];
@@ -88,11 +124,11 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Controllers
                 int[] time = Array.ConvertAll(form["bookingTime"].Split(':'), Int32.Parse);
                 int[] date = Array.ConvertAll(form["date"].Split('.'), Int32.Parse);
                 DateTime dateTime = new DateTime(date[0], date[1], date[2], time[0], time[1], 0);
-
                 //string recurrence = form["Recurrence"];
                 Asztal asztal = FindAsztalByName(tableName);
-                Vasarlo vasarlo = FindVasarlo(kersztNev, vezetekNev, telefon, email);
+                vasarlo = FindVasarlo(kersztNev, vezetekNev, telefon, email);
                 if (vasarlo == null)
+                {
                     vasarlo = new Vasarlo()
                     {
                         KeresztNev = kersztNev,
@@ -100,14 +136,14 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Controllers
                         Telefonszam=telefon,
                         Email= email
                     };
-                using (var ctx = DataContext.Instance())
-                {
-                    var vasarloRepo = ctx.GetRepository<Vasarlo>();
-                    vasarloRepo.Insert(vasarlo);
+                    using (var ctx = DataContext.Instance())
+                    {
+                        var vasarloRepo = ctx.GetRepository<Vasarlo>();
+                        vasarloRepo.Insert(vasarlo);
+                    }
+                    DataContext.Instance().Commit();
+                    vasarlo = FindVasarlo(kersztNev, vezetekNev, telefon, email);
                 }
-                DataContext.Instance().Commit();
-                vasarlo = FindVasarlo(kersztNev, vezetekNev, telefon, email);
-
                 Rendeles rendeles = new Rendeles()
                 {
                     AsztalID=asztal.AsztalID,
@@ -115,32 +151,36 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Controllers
                     BookingDateTime=dateTime,
                     IsCancelled=false,
                 };
-
                 using (var ctx = DataContext.Instance())
                 {
                     var rendelesRepo = ctx.GetRepository<Rendeles>();
                     rendelesRepo.Insert(rendeles);
                 }
                 DataContext.Instance().Commit();
-
                 return RedirectToDefaultRoute();
-                //return JavaScript("\"OK\"");
 
             }
             catch (Exception ex)
             {
-                var s = form.ToString();
-                var t = form["bookingTime"];
-                var d = form["date"];
-                var tn = form["tableName"];
-                s = $"\"{ex.Message}, {ex.StackTrace}, {ex}, {s}, time={t}, date={d}, tn={tn} \"";
-                return JavaScript(s);
-
+                return JavaScript("\"Error\"");
             }
-
 
         }
 
+    }
+
+    public struct BookableTime
+    {
+        public string Time;
+        public string Class;
+        public string OnClick;
+
+        public BookableTime(string time, bool isBooked)
+        {
+            Time = time;
+            Class = isBooked ? "bookedRectangle rectangle" : "rectangle";
+            OnClick = isBooked ? "" : "changeColor(this, 'time')";
+        }
 
     }
 }

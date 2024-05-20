@@ -13,7 +13,7 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Models
     //setup the primary key for table
     [PrimaryKey("VasarloID", AutoIncrement = true)]
     //configure caching using PetaPoco
-    [Cacheable("Vasarlo", CacheItemPriority.Default, 20)]
+    //[Cacheable("Vasarlo", CacheItemPriority.Default, 20)]
     //scope the objects to the ModuleId of a module on a page (or copy of a module on a page)
     [Scope("ModuleId")]
     public class Vasarlo

@@ -9,11 +9,12 @@
 
     var controller = new Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Controllers.RendelesController();
     var tableNames = controller.GetTableNames();
-    var bookableTime = controller.GetBookableTime();
+    var bookableTime = controller.GetBookableTime(Request["tableName"], Request["date"]);
     var vasarloCount = controller.GetVasarloCount();
 
-
-
+    bool isTableAndDateAvailable = !string.IsNullOrEmpty(Request["date"]) && !string.IsNullOrEmpty(Request["tableName"]);
+    string datePickerString = controller.GetDatePickerStringFormRequest(Request["date"]);
+    string selectTableCommand = controller.GetSelectedTableCommand(Request["tableName"]);
 }
 
 <!DOCTYPE html>
@@ -41,6 +42,22 @@
             line-height: 30px;
         }
 
+        .bookedRectangle {
+            width: 50px;
+            height: 30px;
+            background-color: red;
+            margin: 10px;
+            display: inline-block;
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .margined-label {
+            margin-bottom: 20px;
+        }
+
         .clicked {
             background-color: lightgreen;
         }
@@ -54,6 +71,10 @@
         .date-picker {
             width: 30%;
             z-index: 110;
+        }
+
+        #datepicker {
+            margin-bottom: 200px;
         }
 
         .selected-info {
@@ -85,16 +106,13 @@
             cursor: pointer;
         }
 
-        #selected-date {
-            margin-top: 20px;
-            text-align: left; /* Balra igazítás */
-        }
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
     </style>
     <script>
+
         function changeColor(element, type) {
             // Töröljük az összes téglalapból a clicked osztályt az adott sorban
             var rectangles = element.parentElement.querySelectorAll('.rectangle');
@@ -107,24 +125,25 @@
             // Ellenőrizzük, hogy mindkét sorra kattintottunk-e
             var palyaRectangles = document.querySelectorAll('.palya .rectangle.clicked');
             var idoRectangles = document.querySelectorAll('.ido .rectangle.clicked');
-            var selectedInfo = document.getElementById('selected-info');
 
             if (palyaRectangles.length > 0 && idoRectangles.length > 0) {
-                selectedInfo.style.textAlign = "left";
-                selectedInfo.innerHTML = "Kiválasztott pálya: " + palyaRectangles[0].textContent + "<br>" +
-                    "Kiválasztott időpont: " + idoRectangles[0].textContent;
                 document.getElementById("bookingTime").value = idoRectangles[0].textContent;
                 document.getElementById("tableName").value = palyaRectangles[0].textContent;
             } else if (type === "table") {
-                selectedInfo.style.textAlign = "left";
-                selectedInfo.innerHTML = "Kiválasztott pálya: " + element.textContent;
                 document.getElementById("tableName").value = element.textContent;
             } else if (type === "time") {
-                selectedInfo.style.textAlign = "left";
-                selectedInfo.innerHTML = "Kiválasztott időpont: " + element.textContent;
                 document.getElementById("bookingTime").value = element.textContent;
             }
         }
+        function getRequest() {
+            var date = document.getElementById('date').value;
+            var tableName = document.getElementById('tableName').value;
+            var urlString = "@Url.Action("Index")?".concat("date=", date,"&","tableName=", tableName);
+            window.location.replace(urlString);
+        }
+
+
+
     </script>
 </head>
 <body>
@@ -132,9 +151,7 @@
     <div class="container">
         <form class="date-picker">
             <label for="datepicker">Válasszon dátumot:</label>
-            <input type="text" id="datepicker">
-
-            <div id="selected-date"></div>
+            <input type="text" id="datepicker" value="@datePickerString">
 
             <script>
                 $(function () {
@@ -143,65 +160,60 @@
                             var parts = date.split("/");
                             var formattedDate = parts[2] + "." + parts[0] + "." + parts[1];
                             document.getElementById("date").value = formattedDate;
-                            $("#selected-date").text("Kiválasztott dátum: " + formattedDate);
                         }
+
                     });
                 });
             </script>
         </form>
-        <label>
-            Válasszon pályát!
-
-        </label>
+        <label class="margined-label">Válasszon pályát!</label>
         <div>
 
             <div class="palya">
 
                 @foreach (var tableName in tableNames)
                 {
-                    <div class="rectangle" onclick="changeColor(this, 'table')">@(tableName)</div>
+                    <div id="table@(tableName)" class="rectangle @(tableName == Request["tableName"]?"clicked":"")" onclick="changeColor(this, 'table')">@(tableName)</div>
                 }
             </div>
         </div>
-        <label>
-            Válasszon időpontot!
-        </label>
-        <div>
+        <button onclick="getRequest()" type="button">Mutasd a szabad időpontokat!</button>
+            <label class="margined-label">Válasszon időpontot!</label>
+            <div>
 
-            <div class="ido">
-                @foreach (string time in bookableTime)
-                {
-                    <div class="rectangle" onclick="changeColor(this, 'time')">@(time)</div>
-                }
+                <div class="ido">
+                    @foreach (var time in bookableTime)
+                    {
+                        <div class="@(time.Class)" onclick="@(time.OnClick)">@(time.Time)</div>
+                    }
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="selected-info" class="selected-info"></div>
+        <!-- Űrlap a kért adatok bekérésére -->
+        <form id="user-form" class="container" method="post" action="@Url.Action("AddBooking", "Rendeles")">
+            <label for="firstname">Keresztnév:</label>
+            <input type="text" id="firstname" name="firstname" required>
 
-    <!-- Űrlap a kért adatok bekérésére -->
-    <form id="user-form" class="container" method="post" action="@Url.Action("AddBooking", "Rendeles")">
-        <label for="firstname">Keresztnév:</label>
-        <input type="text" id="firstname" name="firstname" required>
+            <label for="lastname">Vezetéknév:</label>
+            <input type="text" id="lastname" name="lastname" required>
 
-        <label for="lastname">Vezetéknév:</label>
-        <input type="text" id="lastname" name="lastname" required>
+            <label for="phone">Telefonszám:</label>
+            <input type="tel" id="phone" name="phone" pattern="\+*[0-9]*" required>
 
-        <label for="phone">Telefonszám:</label>
-        <input type="tel" id="phone" name="phone" pattern="\+*[0-9]*" required>
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
 
-        <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" required>
+            <input type="submit" value="Küldés">
+            <input type="hidden" id="tableName" name="tableName" value="@(Request["tableName"])">
+            <input type="hidden" id="bookingTime" name="bookingTime" value="">
+            <input type="hidden" id="date" name="date" value="@(Request["date"])">
+        </form>
+    
 
-        <input type="submit" value="Küldés">
-        <input type="hidden" id="tableName" name="tableName" value="">
-        <input type="hidden" id="bookingTime" name="bookingTime" value="">
-        <input type="hidden" id="date" name="date" value="">
-    </form>
-
-    <p>@(vasarloCount)</p>
+        <p>@(vasarloCount)</p>
 
 
-</body>
+    </body>
 </html>
 

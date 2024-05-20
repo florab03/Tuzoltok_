@@ -13,7 +13,7 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Models
     //setup the primary key for table
     [PrimaryKey("BookingID", AutoIncrement = true)]
     //configure caching using PetaPoco
-    [Cacheable("Rendeles", CacheItemPriority.Default, 20)]
+    //[Cacheable("Rendeles", CacheItemPriority.Default, 20)]
     //scope the objects to the ModuleId of a module on a page (or copy of a module on a page)
     [Scope("ModuleId")]
     public class Rendeles

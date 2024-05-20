@@ -11,7 +11,7 @@ namespace Dnn.PoolTableBookingDNN.Tuzoltok.PoolTableBooking.Models
     //setup the primary key for table
     [PrimaryKey("AsztalID", AutoIncrement = true)]
     //configure caching using PetaPoco
-    [Cacheable("Asztal", CacheItemPriority.Default, 20)]
+    //[Cacheable("Asztal", CacheItemPriority.Default, 20)]
     //scope the objects to the ModuleId of a module on a page (or copy of a module on a page)
     [Scope("ModuleId")]
     public class Asztal
